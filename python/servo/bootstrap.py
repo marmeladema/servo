@@ -8,7 +8,10 @@ from distutils.spawn import find_executable
 from distutils.version import LooseVersion
 import json
 import os
-import platform
+try:
+    import distro as distro_or_platform
+except ImportError:
+    import platform as distro_or_platform
 import shutil
 import subprocess
 import six.moves.urllib as urllib
@@ -342,7 +345,7 @@ LINUX_SPECIFIC_BOOTSTRAPPERS = {
 
 
 def get_linux_distribution():
-    distro, version, _ = platform.linux_distribution()
+    distro, version, _ = distro_or_platform.linux_distribution()
 
     if distro == 'LinuxMint':
         if '.' in version:
@@ -383,6 +386,7 @@ def get_linux_distribution():
         'centos linux',
         'debian',
         'fedora',
+        'void',
     ]:
         raise Exception('mach bootstrap does not support %s, please file a bug' % distro)
 

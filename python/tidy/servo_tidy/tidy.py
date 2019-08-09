@@ -16,7 +16,7 @@ import itertools
 import json
 import os
 import re
-import StringIO
+from io import StringIO
 import subprocess
 import sys
 
@@ -24,7 +24,7 @@ import colorama
 import toml
 import voluptuous
 import yaml
-from licenseck import OLD_MPL, MPL, APACHE, COPYRIGHT, licenses_toml, licenses_dep_toml
+from .licenseck import OLD_MPL, MPL, APACHE, COPYRIGHT, licenses_toml, licenses_dep_toml
 from six import iteritems
 topdir = os.path.abspath(os.path.dirname(sys.argv[0]))
 wpt = os.path.join(topdir, "tests", "wpt")

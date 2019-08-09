@@ -78,7 +78,7 @@ CATEGORIES = {
 # Possible names of executables
 # NOTE: Windows Python doesn't provide versioned executables, so we must use
 # the plain names. On MSYS, we still use Windows Python.
-PYTHON_NAMES = ["python-2.7", "python2.7", "python2", "python"]
+PYTHON_NAMES = ["python-3.5", "python3.5", "python-3.6", "python3.6", "python-3.7", "python3.7", "python3"]
 
 
 def _get_exec_path(names, is_valid_path=lambda _path: True):
@@ -166,7 +166,7 @@ def _activate_virtualenv(topdir, is_firefox):
         # We want to upgrade pip when virtualenv created for the first time
         need_pip_upgrade = True
 
-    execfile(activate_path, dict(__file__=activate_path))
+    exec(open(activate_path).read(), dict(__file__=activate_path))
 
     python = _get_exec_path(PYTHON_NAMES, is_valid_path=check_exec_path)
     if not python:
@@ -245,8 +245,8 @@ def bootstrap(topdir):
     # We don't support paths with Unicode characters for now
     # https://github.com/servo/servo/issues/10002
     try:
-        topdir.decode('ascii')
-    except UnicodeDecodeError:
+        topdir.encode('ascii')
+    except UnicodeEncodeError:
         print('Cannot run mach in a path with Unicode characters.')
         print('Current path:', topdir)
         sys.exit(1)
@@ -258,10 +258,10 @@ def bootstrap(topdir):
         print('Current path:', topdir)
         sys.exit(1)
 
-    # Ensure we are running Python 2.7+. We put this check here so we generate a
+    # Ensure we are running Python 3.5+. We put this check here so we generate a
     # user-friendly error message rather than a cryptic stack trace on module import.
-    if not (3, 0) > sys.version_info >= (2, 7):
-        print('Python 2.7 or above (but not Python 3) is required to run mach.')
+    if sys.version_info < (3, 5):
+        print('Python 3.5 or above is required to run mach.')
         print('You are running Python', platform.python_version())
         sys.exit(1)
 

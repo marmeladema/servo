@@ -16,7 +16,7 @@ import platform
 import shutil
 from socket import error as socket_error
 import stat
-import StringIO
+from io import StringIO
 import sys
 import time
 import zipfile

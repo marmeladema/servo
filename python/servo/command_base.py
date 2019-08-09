@@ -28,7 +28,7 @@ import zipfile
 from xml.etree.ElementTree import XML
 from servo.util import download_file
 import six.moves.urllib as urllib
-from bootstrap import check_gstreamer_lib
+from servo.bootstrap import check_gstreamer_lib
 
 from mach.decorators import CommandArgument
 from mach.registrar import Registrar
@@ -133,10 +133,10 @@ def normalize_env(env):
     # want UTF-8, they shouldn't pass in a unicode instance.
     normalized_env = {}
     for k, v in env.items():
-        if isinstance(k, unicode):
+        if isinstance(k, str):
             k = k.encode('utf-8', 'strict')
 
-        if isinstance(v, unicode):
+        if isinstance(v, str):
             v = v.encode('utf-8', 'strict')
 
         normalized_env[k] = v
@@ -357,7 +357,7 @@ class CommandBase(object):
                     print()
                     return 1
                 raise
-            version = tuple(map(int, re.match("rustup (\d+)\.(\d+)\.(\d+)", version_line).groups()))
+            version = tuple(map(int, re.match(b"rustup (\d+)\.(\d+)\.(\d+)", version_line).groups()))
             if version < (1, 11, 0):
                 print("rustup is at version %s.%s.%s, Servo requires 1.11.0 or more recent." % version)
                 print("Try running 'rustup self update'.")
@@ -762,12 +762,12 @@ install them, let us know by filing a bug!")
                 'git', 'status', '--porcelain'
             ]).strip())
 
-            git_info.append('')
+            git_info.append(b'')
             git_info.append(git_sha)
             if git_is_dirty:
-                git_info.append('dirty')
+                git_info.append(b'dirty')
 
-        env['GIT_INFO'] = '-'.join(git_info)
+        env[b'GIT_INFO'] = b'-'.join(git_info)
 
         if self.config["build"]["thinlto"]:
             env['RUSTFLAGS'] += " -Z thinlto"
