@@ -3,7 +3,7 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import json
-from urlparse import urljoin
+from urllib.parse import urljoin
 requests = None
 
 class GitHubError(Exception):
@@ -46,7 +46,7 @@ class GitHub(object):
         if 200 <= resp.status_code < 300:
             return resp.json()
         else:
-            print resp.status_code, resp.json()
+            print(resp.status_code, resp.json())
             raise GitHubError(resp.status_code, resp.json())
 
     def repo(self, owner, name):
