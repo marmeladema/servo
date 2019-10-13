@@ -557,7 +557,7 @@ def load_and_update(tests_root,  # type: bytes
         try:
             manifest = _load(logger,
                              tests_root,
-                             manifest_path,
+                             manifest_path.decode(),
                              types=types,
                              allow_cached=allow_cached)
         except ManifestVersionMismatch:

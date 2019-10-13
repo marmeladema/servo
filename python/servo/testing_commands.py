@@ -325,6 +325,7 @@ class MachCommands(CommandBase):
         if self_test:
             return test_tidy.do_tests()
         else:
+            print(self.context.topdir)
             manifest_dirty = run_update(self.context.topdir, check_clean=True)
             tidy_failed = tidy.scan(not all_files, not no_progress, stylo=stylo)
             self.install_rustfmt()

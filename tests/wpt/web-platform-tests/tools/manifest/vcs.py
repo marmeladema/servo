@@ -99,7 +99,7 @@ class FileSystem(object):
         if cache_path is not None:
             if manifest_path is not None:
                 self.mtime_cache = MtimeCache(cache_path, root, manifest_path, rebuild)
-            if gitignore.has_ignore(root):
+            if gitignore.has_ignore(root.deocde()):
                 self.ignore_cache = GitIgnoreCache(cache_path, root, rebuild)
         self.path_filter = gitignore.PathFilter(self.root,
                                                 extras=[".git/"],
@@ -135,6 +135,7 @@ class CacheFile(with_metaclass(abc.ABCMeta)):
         self.tests_root = tests_root
         if not os.path.exists(cache_root):
             os.makedirs(cache_root)
+
         self.path = os.path.join(cache_root, self.file_name)
         self.modified = False
         self.data = self.load(rebuild)
